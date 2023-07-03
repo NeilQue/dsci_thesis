@@ -38,25 +38,27 @@ def rainfall_loop(n):
     '''
     pgi.browser.get(pgi.rainfall_url)
     pgi.click_calendar()
-    date_time = pgi.type_into('12/31/22 00:00') # returns this datetime
+    date_time = pgi.type_into('01/01/23 00:00') # returns this datetime
     pgi.click_set()
     pgi.click_search()
     wait
-    sleep(uniform(0.5, 1))
+    sleep(uniform(0.25, 0.5))
     scrape.scrape_rf(date_time, rainfall_data)
-    print('1')
     
     for i in range(n):
         date_time = pgi.click_increment(date_time)
         wait
-        sleep(uniform(0.5, 1))
+        sleep(uniform(0.25, 5))
         scrape.scrape_rf(date_time, rainfall_data)
-        print(f"{i+2}")
     
     pgi.browser.quit()
     
     return pd.DataFrame(rainfall_data)
 	
 if __name__ == "__main__":
-    rainfall_df = rainfall_loop(23)
-    pprint(rainfall_df)
+    try:
+        rainfall_df = rainfall_loop(23)
+    except:
+        print(f"Ended at {rainfall_df['datetime'].iloc[-1].isoformat()}")
+    finally:
+        rainfall_df.to_csv('rf_data.csv', index=False, header=False, mode='a')
