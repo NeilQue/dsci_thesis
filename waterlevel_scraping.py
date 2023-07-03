@@ -15,7 +15,6 @@ waterlevel_data = {
     'water_level': []
 }
 
-
 wait = WebDriverWait(pgi.browser, 5).until_not(
     expected_conditions.visibility_of_element_located(
         (By.ID, 'loading')
@@ -35,25 +34,27 @@ def waterlevel_loop(n):
     '''
     pgi.browser.get(pgi.waterlvl_url)
     pgi.click_calendar()
-    date_time = pgi.type_into('01/01/23 00:00') # returns this datetime
+    date_time = pgi.type_into('12/31/22 00:00') # returns this datetime
     pgi.click_set()
     pgi.click_search()
     wait
-    sleep(uniform(0.5, 1))
+    sleep(uniform(0.25, 0.5))
     scrape.scrape_wl(date_time, waterlevel_data)
-    print('1')
     
     for i in range(n):
         date_time = pgi.click_increment(date_time)
         wait
-        sleep(uniform(0.5, 1))
+        sleep(uniform(0.25, 0.5))
         scrape.scrape_wl(date_time, waterlevel_data)
-        print(f"{i+2}")
     
     pgi.browser.quit()
     
     return pd.DataFrame(waterlevel_data)
 
 if __name__ == "__main__":
-    waterlevel_df = waterlevel_loop(23)
-    pprint(waterlevel_df)
+    try:
+        waterlevel_df = waterlevel_loop(23)
+    except:
+        print(f"Ended at {waterlevel_df['datetime'].iloc[-1].isoformat()}")
+    finally:
+        waterlevel_df.to_csv('wl_data.csv', index=False, header=False, mode='a')
