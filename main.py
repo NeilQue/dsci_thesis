@@ -2,6 +2,7 @@ import page_interact as pgi
 import scrape
 from time import sleep
 from random import uniform
+import pandas as pd
 
 # The dictionary of lists where data would initially be stored after scraping
 waterlevel_data = {
