@@ -1,10 +1,10 @@
 import pandas as pd
-import waterlevel_scraping as wls
-import rainfall_scraping as rfs
-import scrape_rf
 
-waterlevel_df = wls.waterlevel_loop(23)
-rainfall_df = rfs.rainfall_loop(23)
+waterlevel_cols = ['datetime', 'water_level']
+rainfall_cols = ['datetime', 'station', '1hr', '3hr', '6hr', '12hr', '24hr']
+
+waterlevel_df = pd.read_csv('wl_data.csv', header=None, names=waterlevel_cols)
+rainfall_df = pd.read_csv('rf_data.csv', header=None, names=rainfall_cols)
 
 final_df = pd.merge(waterlevel_df, rainfall_df, on='datetime', how='left')
 final_df.to_csv('data', index=False)
