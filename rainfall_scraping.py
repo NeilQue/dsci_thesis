@@ -6,7 +6,8 @@ import pandas as pd
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import ElementClickInterceptedException
+# from selenium.common.exceptions import NoSuchElementException
+# from selenium.common.exceptions import ElementClickInterceptedException
 from datetime import datetime
 from pprint import pprint
 
@@ -20,12 +21,12 @@ rainfall_data = {
     '24hr': []
 }
 
-ignored_exceptions = [NoSuchElementException, ElementClickInterceptedException]
-wait = WebDriverWait(pgi.browser, 10, ignored_exceptions=ignored_exceptions).until(
-    expected_conditions.element_to_be_clickable(
-        (By.XPATH, '//*[@id="content"]/div/div[1]/div[1]/div/span[2]/a')
-    )
-)
+# ignored_exceptions = [NoSuchElementException, ElementClickInterceptedException]
+# wait = WebDriverWait(pgi.browser, 10, ignored_exceptions=ignored_exceptions).until(
+    # expected_conditions.element_to_be_clickable(
+        # (By.XPATH, '//*[@id="content"]/div/div[1]/div[1]/div/span[2]/a')
+    # )
+# )
 
 def rainfall_loop(n):
     '''
@@ -43,7 +44,11 @@ def rainfall_loop(n):
     date_time = pgi.type_into('12/30/22 00:00') # returns this datetime
     pgi.click_set()
     pgi.click_search()
-    wait
+    wait = WebDriverWait(pgi.browser, 10).until(
+        expected_conditions.invisibility_of_element_located(
+            (By.ID, 'loading')
+        )
+    )
     sleep(uniform(0.25, 0.5))
     scrape.scrape_rf(date_time, rainfall_data)
     
