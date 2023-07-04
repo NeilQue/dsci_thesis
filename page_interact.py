@@ -17,12 +17,9 @@ waterlvl_url = "http://121.58.193.173:8080/water/table.do"
 def type_into(date_time):
     '''
     Type Date and Time into webpage
-    date_time will be manually input
-    date_time should be in the format 09(month)/13(day)/23(year) 13:45
+    date_time is a datetime object parsed from input
     Also returns datetime object for data storage
     '''
-    dt = datetime.strptime(date_time, '%m/%d/%y %H:%M')
-    
     yr = browser.find_element(By.XPATH, 
         value='//*[@id="dtBox"]/div/div/div/div/div[2]/div[1]/div/input')
     mon = browser.find_element(By.XPATH, 
@@ -35,18 +32,18 @@ def type_into(date_time):
         value='//*[@id="dtBox"]/div/div/div/div/div[2]/div[5]/div/input')
         
     yr.click()
-    yr.send_keys(str(dt.year))
+    yr.send_keys(str(date_time.year))
     mon.click()
-    mon.send_keys(str(dt.month))
+    mon.send_keys(str(date_time.month))
     day.click()
-    day.send_keys(str(dt.day))
+    day.send_keys(str(date_time.day))
     hr.click()
-    hr.send_keys(str(dt.hour))
+    hr.send_keys(str(date_time.hour))
     min.click()
-    min.send_keys(str(dt.minute))
+    min.send_keys(str(date_time.minute))
     yr.click()
     
-    return dt
+    return date_time
     
 def click_calendar():
     '''
