@@ -6,6 +6,7 @@ import pandas as pd
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import ElementClickInterceptedException
 from datetime import datetime
 from pprint import pprint
 
@@ -15,9 +16,10 @@ waterlevel_data = {
     'water_level': []
 }
 
-wait = WebDriverWait(pgi.browser, 5).until_not(
-    expected_conditions.visibility_of_element_located(
-        (By.ID, 'loading')
+ignored_exceptions = [NoSuchElementException, ElementClickInterceptedException]
+wait = WebDriverWait(pgi.browser, 10, ignored_exceptions=ignored_exceptions).until(
+    expected_conditions.element_to_be_clickable(
+        (By.XPATH, '//*[@id="content"]/div/div[1]/div[1]/div/span[2]/a')
     )
 )
 
@@ -34,31 +36,29 @@ def waterlevel_loop(n):
     '''
     pgi.browser.get(pgi.waterlvl_url)
     pgi.click_calendar()
-    date_time = pgi.type_into('12/30/22 00:00') # returns this datetime
+    date_time = pgi.type_into('12/29/22 00:00') # returns this datetime
     pgi.click_set()
     pgi.click_search()
     wait
     sleep(uniform(0.25, 0.5))
     scrape.scrape_wl(date_time, waterlevel_data)
     
-    for i in range(n):
-        date_time = pgi.click_increment(date_time)
-        wait
-        sleep(uniform(0.25, 0.5))
-        scrape.scrape_wl(date_time, waterlevel_data)
-    
-    pgi.browser.quit()
-    
-    return pd.DataFrame(waterlevel_data)
+    try:
+        for i in range(n):
+            date_time = pgi.click_increment(date_time)
+            wait
+            sleep(uniform(0.25, 0.5))
+            scrape.scrape_wl(date_time, waterlevel_data)
+    except:
+        print(f'Error; stopped at {date_time}')
+    finally:
+        pgi.browser.quit()        
+        return pd.DataFrame(waterlevel_data)
 
 if __name__ == "__main__":
-    try:
-        # print(datetime.now().isoformat())
-        waterlevel_df = waterlevel_loop(23)
-    except:
-        print(f"Ended at {waterlevel_df['datetime'].iloc[-1].isoformat()}")
-    finally:
-        waterlevel_df.to_csv('wl_data.csv', index=False, header=False, mode='a')
-        # print(datetime.now().isoformat())
+    print(datetime.now().isoformat())
+    waterlevel_df = waterlevel_loop(671)
+    waterlevel_df.to_csv('wl_data.csv', index=False, header=False, mode='a')
+    print(datetime.now().isoformat())
         
-    # 27-28s for 1 days worth
+    # for 24hours worth of data: 28s, 19s

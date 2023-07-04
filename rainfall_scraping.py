@@ -6,6 +6,7 @@ import pandas as pd
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import ElementClickInterceptedException
 from datetime import datetime
 from pprint import pprint
 
@@ -19,9 +20,10 @@ rainfall_data = {
     '24hr': []
 }
 
-wait = WebDriverWait(pgi.browser, 5).until_not(
-    expected_conditions.visibility_of_element_located(
-        (By.ID, 'loading')
+ignored_exceptions = [NoSuchElementException, ElementClickInterceptedException]
+wait = WebDriverWait(pgi.browser, 10, ignored_exceptions=ignored_exceptions).until(
+    expected_conditions.element_to_be_clickable(
+        (By.XPATH, '//*[@id="content"]/div/div[1]/div[1]/div/span[2]/a')
     )
 )
 
@@ -45,24 +47,22 @@ def rainfall_loop(n):
     sleep(uniform(0.25, 0.5))
     scrape.scrape_rf(date_time, rainfall_data)
     
-    for i in range(n):
-        date_time = pgi.click_increment(date_time)
-        wait
-        sleep(uniform(0.25, 5))
-        scrape.scrape_rf(date_time, rainfall_data)
-    
-    pgi.browser.quit()
-    
-    return pd.DataFrame(rainfall_data)
+    try:
+        for i in range(n):
+            date_time = pgi.click_increment(date_time)
+            wait
+            sleep(uniform(0.25, 0.5))
+            scrape.scrape_rf(date_time, rainfall_data)
+    except:
+        print(f'Error; stopped at {date_time}')
+    finally:
+        pgi.browser.quit()
+        return pd.DataFrame(rainfall_data)
 	
 if __name__ == "__main__":
-    try:
-        # print(datetime.now().isoformat())
-        rainfall_df = rainfall_loop(23)
-    except:
-        print(f"Ended at {rainfall_df['datetime'].iloc[-1].isoformat()}")
-    finally:
-        rainfall_df.to_csv('rf_data.csv', index=False, header=False, mode='a')
-        # print(datetime.now().isoformat())
+    print(datetime.now().isoformat())
+    rainfall_df = rainfall_loop(23)
+    rainfall_df.to_csv('rf_data.csv', index=False, header=False, mode='a')
+    print(datetime.now().isoformat())
         
-    # ~6mins for 1 days worth
+    # ~6mins for 24 days worth
