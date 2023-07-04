@@ -15,3 +15,7 @@
   * https://airbyte.com/blog/pandas-2-0-ecosystem-arrow-polars-duckdb
 * EDA using jupyter and pygwalker for no-code data viz; maybe R for stuff that involves calculations for precision of decimal arithmetic
   * https://github.com/Kanaries/pygwalker
+
+## PAGASA Website
+* http://121.58.193.173:8080/rainfall/table.do
+* http://121.58.193.173:8080/water/table.do
