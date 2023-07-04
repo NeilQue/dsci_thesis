@@ -2,10 +2,10 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException
-from selenium.common.exceptions import StaleElementReferenceException
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions
+# from selenium.common.exceptions import NoSuchElementException
+# from selenium.common.exceptions import StaleElementReferenceException
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions
 import page_interact as pgi
 from datetime import datetime
 from pprint import pprint
@@ -22,8 +22,8 @@ rainfall_data = {
     '24hr': []
 }
 
-ignored_exceptions = [NoSuchElementException, StaleElementReferenceException]
-wait = WebDriverWait(pgi.browser, 5, ignored_exceptions=ignored_exceptions)
+# ignored_exceptions = [NoSuchElementException, StaleElementReferenceException]
+# wait = WebDriverWait(pgi.browser, 5, ignored_exceptions=ignored_exceptions)
 
 def scrape_wl(date_time, data_dict):
     '''
@@ -60,9 +60,9 @@ def scrape_rf(date_time, data_dict):
         data_dict['24hr'].append(data_list[6])
     
 if __name__ == '__main__':
-    print((datetime.now().isoformat()))
+    print(datetime.now().isoformat())
     pgi.browser.get("http://121.58.193.173:8080/rainfall/table.do")
-    print((datetime.now().isoformat()))
+    print(datetime.now().isoformat())
     pgi.click_calendar()
     # wait.until(
         # expected_conditions.visibility_of_element_located(
@@ -82,10 +82,10 @@ if __name__ == '__main__':
     pgi.click_search()
     sleep(1)
     scrape_rf(date_time, rainfall_data)
-    print((datetime.now().isoformat()))
+    print(datetime.now().isoformat())
     date_time = pgi.click_increment(date_time)
     sleep(1)
     scrape_rf(date_time, rainfall_data)
-    print((datetime.now().isoformat()))
+    print(datetime.now().isoformat())
     print(pd.DataFrame(rainfall_data))
-    print((datetime.now().isoformat()))
+    print(datetime.now().isoformat())
