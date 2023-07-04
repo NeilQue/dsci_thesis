@@ -34,7 +34,7 @@ def waterlevel_loop(n):
     '''
     pgi.browser.get(pgi.waterlvl_url)
     pgi.click_calendar()
-    date_time = pgi.type_into('12/31/22 00:00') # returns this datetime
+    date_time = pgi.type_into('12/30/22 00:00') # returns this datetime
     pgi.click_set()
     pgi.click_search()
     wait
@@ -53,8 +53,12 @@ def waterlevel_loop(n):
 
 if __name__ == "__main__":
     try:
+        # print(datetime.now().isoformat())
         waterlevel_df = waterlevel_loop(23)
     except:
         print(f"Ended at {waterlevel_df['datetime'].iloc[-1].isoformat()}")
     finally:
         waterlevel_df.to_csv('wl_data.csv', index=False, header=False, mode='a')
+        # print(datetime.now().isoformat())
+        
+    # 27-28s for 1 days worth

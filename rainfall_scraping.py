@@ -38,7 +38,7 @@ def rainfall_loop(n):
     '''
     pgi.browser.get(pgi.rainfall_url)
     pgi.click_calendar()
-    date_time = pgi.type_into('01/01/23 00:00') # returns this datetime
+    date_time = pgi.type_into('12/30/22 00:00') # returns this datetime
     pgi.click_set()
     pgi.click_search()
     wait
@@ -57,8 +57,12 @@ def rainfall_loop(n):
 	
 if __name__ == "__main__":
     try:
+        # print(datetime.now().isoformat())
         rainfall_df = rainfall_loop(23)
     except:
         print(f"Ended at {rainfall_df['datetime'].iloc[-1].isoformat()}")
     finally:
         rainfall_df.to_csv('rf_data.csv', index=False, header=False, mode='a')
+        # print(datetime.now().isoformat())
+        
+    # ~6mins for 1 days worth
