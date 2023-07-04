@@ -24,9 +24,11 @@ waterlevel_data = {
     # )
 # )
 
-def waterlevel_loop(n):
+def waterlevel_loop(start, end):
     '''
-    Conducts the process for scraping water level data worth n+1 hours.
+    Conducts the process for scraping hourly water level data from start to end.
+    start should be a later date than end.
+    start and end should be in the format 09(month)/13(day)/23(year) 13:45
     Starts with opening the webpage for water level,
     then interacts with the page to get the initial data,
     then obtaining the data.
@@ -35,9 +37,14 @@ def waterlevel_loop(n):
     The length of the sleep period is randomized to avoid bot detection.
     The data is stored in a dictionary of lists which would be converted into a DataFrame.
     '''
+    start_date = datetime.strptime(start, '%m/%d/%y %H:%M')
+    end_date = datetime.strptime(end, '%m/%d/%y %H:%M')
+    diff = start_date - end_date
+    num_hours = diff.days*24 + diff.seconds//3600
+    
     pgi.browser.get(pgi.waterlvl_url)
     pgi.click_calendar()
-    date_time = pgi.type_into('12/27/22 00:00') # returns this datetime
+    date_time = pgi.type_into(start_date) # returns this datetime
     pgi.click_set()
     pgi.click_search()
     wait = WebDriverWait(pgi.browser, 10).until(
@@ -49,7 +56,7 @@ def waterlevel_loop(n):
     scrape.scrape_wl(date_time, waterlevel_data)
     
     try:
-        for i in range(n):
+        for i in range(num_hours):
             date_time = pgi.click_increment(date_time)
             wait
             sleep(uniform(0.25, 0.5))
@@ -62,8 +69,8 @@ def waterlevel_loop(n):
 
 if __name__ == "__main__":
     print(datetime.now().isoformat())
-    waterlevel_df = waterlevel_loop(23)
+    waterlevel_df = waterlevel_loop('12/26/23 00:00', '12/25/23 01:00')
     waterlevel_df.to_csv('wl_data.csv', index=False, header=False, mode='a')
     print(datetime.now().isoformat())
         
-    # for 24hours worth of data: 28s, 19s
+    # for 24hours worth of data: 28s, 19s. 20s

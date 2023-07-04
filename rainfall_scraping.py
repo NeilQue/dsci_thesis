@@ -28,9 +28,11 @@ rainfall_data = {
     # )
 # )
 
-def rainfall_loop(n):
+def rainfall_loop(start, end):
     '''
-    Conducts the process for scraping rainfall data worth n+1 hours.
+    Conducts the process for scraping hourly rainfall data from start to end.
+    start should be a later date than end.
+    start and end should be in the format 09(month)/13(day)/23(year) 13:45
     Starts with opening the webpage for rainfall,
     then interacts with the page to get the initial data,
     then obtaining the data.
@@ -39,9 +41,14 @@ def rainfall_loop(n):
     The length of the sleep period is randomized to avoid bot detection.
     The data is stored in a dictionary of lists which would be converted into a DataFrame.
     '''
+    start_date = datetime.strptime(start, '%m/%d/%y %H:%M')
+    end_date = datetime.strptime(end, '%m/%d/%y %H:%M')
+    diff = start_date - end_date
+    num_hours = diff.days*24 + diff.seconds//3600
+    
     pgi.browser.get(pgi.rainfall_url)
     pgi.click_calendar()
-    date_time = pgi.type_into('12/30/22 00:00') # returns this datetime
+    date_time = pgi.type_into(start_date) # returns this datetime
     pgi.click_set()
     pgi.click_search()
     wait = WebDriverWait(pgi.browser, 10).until(
@@ -53,7 +60,7 @@ def rainfall_loop(n):
     scrape.scrape_rf(date_time, rainfall_data)
     
     try:
-        for i in range(n):
+        for i in range(num_hours):
             date_time = pgi.click_increment(date_time)
             wait
             sleep(uniform(0.25, 0.5))
@@ -66,8 +73,8 @@ def rainfall_loop(n):
 	
 if __name__ == "__main__":
     print(datetime.now().isoformat())
-    rainfall_df = rainfall_loop(23)
+    rainfall_df = rainfall_loop('12/30/22 00:00', '12/29/23 01:00')
     rainfall_df.to_csv('rf_data.csv', index=False, header=False, mode='a')
     print(datetime.now().isoformat())
         
-    # ~6mins for 24 days worth
+    # for 24 days worth of data: ~6mins
