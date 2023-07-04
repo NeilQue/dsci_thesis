@@ -1,5 +1,6 @@
 # dsci_thesis
 
+## Files and Instructions
 * page_interact.py and scrape.py contains the main functions used for the scraping process
 * The previous main.py has been separated into rainfall_scraping.py and waterlevel_scraping.py, which contains the scraping loop
 * Inputs to be changed are same as before
@@ -7,3 +8,7 @@
 * merge.py only when everything is finished
 * Do not download csv files, they contain 2022 data and the script will not erase this data when writing to the csv file
 * No need to create csv file manually, code will do it for you
+
+## To Do:
+* try to lessen scraping time using pandas 2.0 and pyarrow
+* EDA using jupyter and pygwalker for no-code data viz; maybe R for stuff that involves calculations for precision of decimal arithmetic
