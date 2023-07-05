@@ -8,12 +8,15 @@
 * merge.py only when everything is finished
 * Do not download csv files, they contain 2022 data and the script will not erase this data when writing to the csv file
 * No need to create csv file manually, code will do it for you
-* When error/exeption occurs, program shows you the datetime it ended, continue scrape from there
+
 
 ## Errors
-* TimeoutException: napagod yung program maghintay sa loading, run lang ulit
-* ElementClickInterceptedException: baka di na lumabas to, pero if ever, run lang ulit unless immediately ulit siya mag appear
+* TimeoutException: napagod yung program maghintay sa loading ng page
+* ElementClickInterceptedException: di maclick yung button kasi may nakaharang
 * KeyboardInterrupt: kung may napindot ka (specifically ctrl+c)
+* StaleElementReferenceException: natagalan sa pagload ng data, kala ko di na lalabas to ulit
+* When error/exeption occurs, program shows you the datetime it ended, continue scrape from there
+* all cases run lang ulit ng code, pretty sure di na kelangan ng code changes (unless konti palang talaga nag eerror na ulit)
 
 ## To Do:
 * [not urgent: mas tatagal pa ata pag inaral ko pa to] try to lessen scraping time using pandas 2.0 and pyarrow
