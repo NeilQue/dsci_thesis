@@ -13,6 +13,7 @@
 ## Errors
 * TimeoutException: napagod yung program maghintay sa loading, run lang ulit
 * ElementClickInterceptedException: baka di na lumabas to, pero if ever, run lang ulit unless immediately ulit siya mag appear
+* KeyboardInterrupt: kung may napindot ka (specifically ctrl+c)
 
 ## To Do:
 * [not urgent: mas tatagal pa ata pag inaral ko pa to] try to lessen scraping time using pandas 2.0 and pyarrow
