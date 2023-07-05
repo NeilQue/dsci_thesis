@@ -16,6 +16,7 @@
 * KeyboardInterrupt: kung may napindot ka (specifically ctrl+c)
 * StaleElementReferenceException: natagalan sa pagload ng data, kala ko di na lalabas to ulit
 * When error/exeption occurs, program shows you the datetime it ended, continue scrape from there
+  * check file para sure kung ano kelangan start datetime
 * all cases run lang ulit ng code, pretty sure di na kelangan ng code changes (unless konti palang talaga nag eerror na ulit)
 
 ## To Do:
