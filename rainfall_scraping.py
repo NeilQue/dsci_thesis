@@ -47,15 +47,16 @@ def rainfall_loop(start, end):
     num_hours = diff.days*24 + diff.seconds//3600
     
     pgi.browser.get(pgi.rainfall_url)
-    pgi.click_calendar()
-    date_time = pgi.type_into(start_date) # returns this datetime
-    pgi.click_set()
-    pgi.click_search()
     wait = WebDriverWait(pgi.browser, 10).until(
         expected_conditions.invisibility_of_element_located(
             (By.ID, 'loading')
         )
     )
+    pgi.click_calendar()
+    date_time = pgi.type_into(start_date) # returns this datetime
+    pgi.click_set()
+    pgi.click_search()
+    wait
     sleep(uniform(0.25, 0.5))
     scrape.scrape_rf(date_time, rainfall_data)
     
@@ -73,9 +74,12 @@ def rainfall_loop(start, end):
 	
 if __name__ == "__main__":
     print(datetime.now().isoformat())
-    rainfall_df = rainfall_loop('12/26/22 00:00', '12/25/22 01:00')
+    rainfall_df = rainfall_loop('12/12/22 00:00', '12/05/22 01:00')
     rainfall_df.to_csv('rf_data.csv', index=False, header=False, mode='a')
     print(datetime.now().isoformat())
         
-    # for 24 days worth of data: ~6mins
-    # for almost 3 days: ~5mins
+    # for 24 days worth of data: 6mins
+    # for almost 3.5 days: 5mins
+    # for ~5 days: 17mins
+    # ~2days: 2mins
+    # for ~5 days: ~13mins 

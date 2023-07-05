@@ -43,15 +43,16 @@ def waterlevel_loop(start, end):
     num_hours = diff.days*24 + diff.seconds//3600
     
     pgi.browser.get(pgi.waterlvl_url)
-    pgi.click_calendar()
-    date_time = pgi.type_into(start_date) # returns this datetime
-    pgi.click_set()
-    pgi.click_search()
     wait = WebDriverWait(pgi.browser, 10).until(
         expected_conditions.invisibility_of_element_located(
             (By.ID, 'loading')
         )
     )
+    pgi.click_calendar()
+    date_time = pgi.type_into(start_date) # returns this datetime
+    pgi.click_set()
+    pgi.click_search()
+    wait
     sleep(uniform(0.25, 0.5))
     scrape.scrape_wl(date_time, waterlevel_data)
     
@@ -69,8 +70,9 @@ def waterlevel_loop(start, end):
 
 if __name__ == "__main__":
     print(datetime.now().isoformat())
-    waterlevel_df = waterlevel_loop('01/01/23 00:00', '12/26/22 01:00')
+    waterlevel_df = waterlevel_loop('12/19/22 00:00', '12/12/22 01:00')
     waterlevel_df.to_csv('wl_data.csv', index=False, header=False, mode='a')
     print(datetime.now().isoformat())
         
     # for 24hours worth of data: 28s, 19s. 20s
+    # 1 week data: ~1min
