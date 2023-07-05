@@ -65,16 +65,17 @@ def rainfall_loop(start, end):
             wait
             sleep(uniform(0.25, 0.5))
             scrape.scrape_rf(date_time, rainfall_data)
-    except:
-        print(f'Error; stopped at {date_time}')
+    except Exception as e:
+        print(f'Error: {type(e)}\nstopped at {date_time}')
     finally:
         pgi.browser.quit()
         return pd.DataFrame(rainfall_data)
 	
 if __name__ == "__main__":
     print(datetime.now().isoformat())
-    rainfall_df = rainfall_loop('12/30/22 00:00', '12/29/23 01:00')
+    rainfall_df = rainfall_loop('12/26/22 00:00', '12/25/22 01:00')
     rainfall_df.to_csv('rf_data.csv', index=False, header=False, mode='a')
     print(datetime.now().isoformat())
         
     # for 24 days worth of data: ~6mins
+    # for almost 3 days: ~5mins

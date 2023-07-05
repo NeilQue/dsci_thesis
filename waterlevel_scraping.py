@@ -61,15 +61,15 @@ def waterlevel_loop(start, end):
             wait
             sleep(uniform(0.25, 0.5))
             scrape.scrape_wl(date_time, waterlevel_data)
-    except:
-        print(f'Error; stopped at {date_time}')
+    except Exception as e:
+        print(f'Error: {type(e)}\nstopped at {date_time}')
     finally:
         pgi.browser.quit()        
         return pd.DataFrame(waterlevel_data)
 
 if __name__ == "__main__":
     print(datetime.now().isoformat())
-    waterlevel_df = waterlevel_loop('12/26/23 00:00', '12/25/23 01:00')
+    waterlevel_df = waterlevel_loop('01/01/23 00:00', '12/26/22 01:00')
     waterlevel_df.to_csv('wl_data.csv', index=False, header=False, mode='a')
     print(datetime.now().isoformat())
         
