@@ -10,7 +10,7 @@
 * No need to create csv file manually, code will do it for you
 
 ## To Do:
-* try to lessen scraping time using pandas 2.0 and pyarrow
+* [not urgent: mas tatagal pa ata pag inaral ko pa to] try to lessen scraping time using pandas 2.0 and pyarrow
   * https://towardsdatascience.com/pandas-2-0-a-game-changer-for-data-scientists-3cd281fcc4b4
   * https://airbyte.com/blog/pandas-2-0-ecosystem-arrow-polars-duckdb
 * EDA using jupyter and pygwalker for no-code data viz; maybe R for stuff that involves calculations for precision of decimal arithmetic
