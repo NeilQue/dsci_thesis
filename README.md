@@ -13,7 +13,6 @@
 ## Errors
 * TimeoutException: napagod yung program maghintay sa loading ng page
 * ElementClickInterceptedException: di maclick yung button kasi may nakaharang
-* KeyboardInterrupt: kung may napindot ka (specifically ctrl+c)
 * StaleElementReferenceException: natagalan sa pagload ng data, kala ko di na lalabas to ulit
 * When error/exeption occurs, program shows you the datetime it ended, continue scrape from there
   * check file para sure kung ano kelangan start datetime
