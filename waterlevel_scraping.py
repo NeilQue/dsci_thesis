@@ -53,14 +53,14 @@ def waterlevel_loop(start, end):
     pgi.click_set()
     pgi.click_search()
     wait
-    sleep(uniform(0.25, 0.5))
+    sleep(uniform(0.5, 0.75))
     scrape.scrape_wl(date_time, waterlevel_data)
     
     try:
         for i in range(num_hours):
             date_time = pgi.click_increment(date_time)
             wait
-            sleep(uniform(0.25, 0.5))
+            sleep(uniform(0.5, 0.75))
             scrape.scrape_wl(date_time, waterlevel_data)
     except Exception as e:
         print(f'Error: {type(e)}\nstopped at {date_time}')
@@ -70,9 +70,9 @@ def waterlevel_loop(start, end):
 
 if __name__ == "__main__":
     print(datetime.now().isoformat())
-    waterlevel_df = waterlevel_loop('12/19/22 00:00', '12/12/22 01:00')
+    waterlevel_df = waterlevel_loop('12/03/22 07:00', '12/01/22 01:00')
     waterlevel_df.to_csv('wl_data.csv', index=False, header=False, mode='a')
     print(datetime.now().isoformat())
         
     # for 24hours worth of data: 28s, 19s. 20s
-    # 1 week data: ~1min
+    # 1 week data: ~1min, ~2mins

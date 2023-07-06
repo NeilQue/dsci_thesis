@@ -57,14 +57,14 @@ def rainfall_loop(start, end):
     pgi.click_set()
     pgi.click_search()
     wait
-    sleep(uniform(0.25, 0.5))
+    sleep(uniform(0.5, 0.75))
     scrape.scrape_rf(date_time, rainfall_data)
     
     try:
         for i in range(num_hours):
             date_time = pgi.click_increment(date_time)
             wait
-            sleep(uniform(0.25, 0.5))
+            sleep(uniform(0.5, 0.75))
             scrape.scrape_rf(date_time, rainfall_data)
     except Exception as e:
         print(f'Error: {type(e)}\nstopped at {date_time}')
