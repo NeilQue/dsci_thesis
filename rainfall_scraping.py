@@ -1,7 +1,7 @@
 import page_interact as pgi
 import scrape
-from time import sleep
-from random import uniform
+# from time import sleep
+# from random import uniform
 import pandas as pd
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
@@ -71,7 +71,7 @@ def rainfall_loop(start, end):
 	
 if __name__ == "__main__":
     print(datetime.now().isoformat())
-    rainfall_df = rainfall_loop('11/24/22 00:00', '11/17/22 01:00')
+    rainfall_df = rainfall_loop('11/17/22 00:00', '11/10/22 01:00')
     rainfall_df.to_csv('rf_data.csv', index=False, header=False, mode='a')
     print(datetime.now().isoformat())
         
