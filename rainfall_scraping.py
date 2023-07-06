@@ -42,11 +42,6 @@ def rainfall_loop(start, end):
     num_hours = diff.days*24 + diff.seconds//3600
     
     pgi.browser.get(pgi.rainfall_url)
-    wait_calendar = WebDriverWait(pgi.browser, 5, ignored_exceptions=ignored_exceptions).until(
-        expected_conditions.element_to_be_clickable(
-            (By.XPATH, '//*[@id="content"]/div/div[1]/div[1]/div/span[1]/span')
-        )
-    )
     pgi.click_calendar()
     date_time = pgi.type_into(start_date) # returns this datetime
     pgi.click_set()
@@ -55,12 +50,6 @@ def rainfall_loop(start, end):
     
     try:
         for i in range(num_hours):
-            wait_increment = WebDriverWait(pgi.browser, 5, ignored_exceptions=ignored_exceptions).\
-                until(
-                    expected_conditions.element_to_be_clickable(
-                        (By.XPATH, '//*[@id="content"]/div/div[1]/div[1]/div/span[2]/a')
-                    )
-                )
             date_time = pgi.click_increment(date_time)
             scrape.scrape_rf(date_time, rainfall_data)
     except Exception as e:
@@ -71,7 +60,7 @@ def rainfall_loop(start, end):
 	
 if __name__ == "__main__":
     print(datetime.now().isoformat())
-    rainfall_df = rainfall_loop('11/17/22 00:00', '11/10/22 01:00')
+    rainfall_df = rainfall_loop('11/05/22 11:00', '11/03/22 01:00')
     rainfall_df.to_csv('rf_data.csv', index=False, header=False, mode='a')
     print(datetime.now().isoformat())
         
