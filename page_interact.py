@@ -2,8 +2,13 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import ElementClickInterceptedException
 from datetime import datetime
 from datetime import timedelta
+from time import sleep
 
 # instantiate driver needed to interact with browser
 options = webdriver.ChromeOptions()
@@ -13,6 +18,16 @@ browser = webdriver.Chrome(service=Service(ChromeDriverManager().install()), opt
 # urls where data is contained
 rainfall_url = "http://121.58.193.173:8080/rainfall/table.do"
 waterlvl_url = "http://121.58.193.173:8080/water/table.do"
+
+ignored_exceptions = [NoSuchElementException, ElementClickInterceptedException]
+
+def wait_loading():
+    sleep(0.1)
+    WebDriverWait(browser, 10, ignored_exceptions=ignored_exceptions).until(
+        expected_conditions.text_to_be_present_in_element_attribute(
+            (By.ID, 'loading'), 'style', 'display: none;'
+        )
+    )
 
 def type_into(date_time):
     '''
@@ -49,8 +64,11 @@ def click_calendar():
     '''
     Click calendar icon for pop-up
     '''
+    wait_loading()
+    
     button = browser.find_element(By.XPATH, 
-        value='//*[@id="content"]/div/div[1]/div[1]/div/span[1]/span')
+        value='//*[@id="content"]/div/div[1]/div[1]/div/span[1]/span'
+    )
     button.click()
 
 def click_increment(date_time):
@@ -59,8 +77,11 @@ def click_increment(date_time):
     date_time obtained from previous iteration
     Returns new datetime by subtracting an hour
     '''
+    wait_loading()
+    
     button = browser.find_element(By.XPATH, 
-        value='//*[@id="content"]/div/div[1]/div[1]/div/span[2]/a')
+        value='//*[@id="content"]/div/div[1]/div[1]/div/span[2]/a'
+    )
     button.click()
     
     return date_time - timedelta(hours=1)

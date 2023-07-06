@@ -2,10 +2,10 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-# from selenium.common.exceptions import NoSuchElementException
-# from selenium.common.exceptions import StaleElementReferenceException
-# from selenium.webdriver.support.ui import WebDriverWait
-# from selenium.webdriver.support import expected_conditions
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions
 import page_interact as pgi
 from datetime import datetime
 from pprint import pprint
@@ -22,14 +22,15 @@ rainfall_data = {
     '24hr': []
 }
 
-# ignored_exceptions = [NoSuchElementException, StaleElementReferenceException]
-# wait = WebDriverWait(pgi.browser, 5, ignored_exceptions=ignored_exceptions)
+ignored_exceptions = [NoSuchElementException, StaleElementReferenceException]
 
 def scrape_wl(date_time, data_dict):
     '''
     Scrape data from waterlevel webpage and store it in dictionary
     '''
-    data = pgi.browser.find_element(By.XPATH, value='//*[@id="11104201"]/td[1]/span').text
+    data = WebDriverWait(pgi.browser, 5, ignored_exceptions=ignored_exceptions).until(
+        lambda d: d.find_element(By.XPATH, value='//*[@id="11104201"]/td[1]/span').text
+    )
     
     data_dict['datetime'].append(date_time)
     data_dict['water_level'].append(data)
@@ -38,6 +39,10 @@ def scrape_rf(date_time, data_dict):
     '''
     Scrape data from rainfall webpage and store it in dictionary
     '''
+    WebDriverWait(pgi.browser, 5, ignored_exceptions=ignored_exceptions).until(
+        lambda d: d.find_element(By.XPATH, '//*[@id="11303101"]/td[7]/span').text
+    )
+    
     data_table = pgi.browser.find_element(By.XPATH, value='//*[@id="tblList"]')
     rows = data_table.find_elements(By.TAG_NAME, 'tr')
     

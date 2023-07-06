@@ -6,8 +6,8 @@ import pandas as pd
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.common.by import By
-# from selenium.common.exceptions import NoSuchElementException
-# from selenium.common.exceptions import ElementClickInterceptedException
+from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import ElementClickInterceptedException
 from datetime import datetime
 from pprint import pprint
 
@@ -21,12 +21,7 @@ rainfall_data = {
     '24hr': []
 }
 
-# ignored_exceptions = [NoSuchElementException, ElementClickInterceptedException]
-# wait = WebDriverWait(pgi.browser, 10, ignored_exceptions=ignored_exceptions).until(
-    # expected_conditions.element_to_be_clickable(
-        # (By.XPATH, '//*[@id="content"]/div/div[1]/div[1]/div/span[2]/a')
-    # )
-# )
+ignored_exceptions = [NoSuchElementException, ElementClickInterceptedException]
 
 def rainfall_loop(start, end):
     '''
@@ -47,34 +42,36 @@ def rainfall_loop(start, end):
     num_hours = diff.days*24 + diff.seconds//3600
     
     pgi.browser.get(pgi.rainfall_url)
-    wait = WebDriverWait(pgi.browser, 10).until(
-        expected_conditions.invisibility_of_element_located(
-            (By.ID, 'loading')
+    wait_calendar = WebDriverWait(pgi.browser, 5, ignored_exceptions=ignored_exceptions).until(
+        expected_conditions.element_to_be_clickable(
+            (By.XPATH, '//*[@id="content"]/div/div[1]/div[1]/div/span[1]/span')
         )
     )
     pgi.click_calendar()
     date_time = pgi.type_into(start_date) # returns this datetime
     pgi.click_set()
     pgi.click_search()
-    wait
-    sleep(uniform(0.5, 0.75))
     scrape.scrape_rf(date_time, rainfall_data)
     
     try:
         for i in range(num_hours):
+            wait_increment = WebDriverWait(pgi.browser, 5, ignored_exceptions=ignored_exceptions).\
+                until(
+                    expected_conditions.element_to_be_clickable(
+                        (By.XPATH, '//*[@id="content"]/div/div[1]/div[1]/div/span[2]/a')
+                    )
+                )
             date_time = pgi.click_increment(date_time)
-            wait
-            sleep(uniform(0.5, 0.75))
             scrape.scrape_rf(date_time, rainfall_data)
     except Exception as e:
-        print(f'Error: {type(e)}\nstopped at {date_time}')
+        print(f'{type(e)}: {e}\nstopped at {date_time}')
     finally:
         pgi.browser.quit()
         return pd.DataFrame(rainfall_data)
 	
 if __name__ == "__main__":
     print(datetime.now().isoformat())
-    rainfall_df = rainfall_loop('12/12/22 00:00', '12/05/22 01:00')
+    rainfall_df = rainfall_loop('11/24/22 00:00', '11/17/22 01:00')
     rainfall_df.to_csv('rf_data.csv', index=False, header=False, mode='a')
     print(datetime.now().isoformat())
         
@@ -83,3 +80,4 @@ if __name__ == "__main__":
     # for ~5 days: 17mins
     # ~2days: 2mins
     # for ~5 days: ~13mins 
+    # for 6-7 days: ~16mins
