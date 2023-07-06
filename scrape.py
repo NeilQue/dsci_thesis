@@ -11,6 +11,7 @@ from datetime import datetime
 from pprint import pprint
 from time import sleep
 import pandas as pd
+from random import uniform
 
 rainfall_data = {
     'datetime': [],
@@ -40,9 +41,9 @@ def scrape_rf(date_time, data_dict):
     Scrape data from rainfall webpage and store it in dictionary
     '''
     WebDriverWait(pgi.browser, 5, ignored_exceptions=ignored_exceptions).until(
-        lambda d: d.find_element(By.XPATH, '//*[@id="11303101"]/td[7]/span').text
+        lambda d: d.find_element(By.XPATH, '//*[@id="11303102"]/td[4]/span').text
     )
-    
+    sleep(uniform(0.25, 0.5))
     data_table = pgi.browser.find_element(By.XPATH, value='//*[@id="tblList"]')
     rows = data_table.find_elements(By.TAG_NAME, 'tr')
     
