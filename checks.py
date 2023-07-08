@@ -5,14 +5,29 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
+from datetime import datetime
 
-def data_num():
-    rainfall_cols = ['datetime', 'station', '1hr', '3hr', '6hr', '12hr', '24hr']
+waterlevel_cols = ['datetime', 'water_level']
+rainfall_cols = ['datetime', 'station', '1hr', '3hr', '6hr', '12hr', '24hr']
 
+def check_col_types_wl():
+    df = pd.read_csv('wl_data.csv', header=None, names=waterlevel_cols, engine='pyarrow')
+    print(df.info())
+
+def check_col_types_rf():
+    df = pd.read_csv('rf_data.csv', header=None, names=rainfall_cols, engine='pyarrow')
+    print(df.info())
+
+def data_num_rf():
     rainfall_df = pd.read_csv('rf_data.csv', header=None, names=rainfall_cols, engine='pyarrow')
-    datetime_counts = rainfall_df['datetime'].value_counts()
-    print(datetime_counts[datetime_counts!=26])
+    # datetime_counts = rainfall_df['datetime'].value_counts()
+    print(type(rainfall_df.datetime.unique()[-1]))
     
+def data_num_wl():
+    waterlevel_df = pd.read_csv('wl_data.csv', header=None, names=waterlevel_cols, engine='pyarrow')
+    # datetime_counts = rainfall_df['datetime'].value_counts()
+    print(waterlevel_df.datetime.unique())    
+
 def wait_test():
     pgi.browser.get(pgi.waterlvl_url)
     # pgi.browser.get(pgi.rainfall_url)
@@ -26,4 +41,7 @@ def wait_test():
     return data
     
 if __name__ == "__main__":
-    print(wait_test())
+    # print(wait_test())
+    # data_num_rf()
+    # print(type(datetime.strptime('11/05/22 11:00', '%m/%d/%y %H:%M')))
+    data_num_rf()
