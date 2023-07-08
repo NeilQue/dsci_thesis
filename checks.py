@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import StaleElementReferenceException
 from datetime import datetime
+from scrape import data_loaded
 
 waterlevel_cols = ['datetime', 'water_level']
 rainfall_cols = ['datetime', 'station', '1hr', '3hr', '6hr', '12hr', '24hr']
@@ -40,8 +41,29 @@ def wait_test():
     # )
     return data
     
+def get_ids():
+    pgi.browser.get(pgi.rainfall_url)
+    data_table = pgi.browser.find_element(By.XPATH, value='//*[@id="tblList"]')
+    rows = data_table.find_elements(By.TAG_NAME, 'tr')
+    
+    for row in rows:
+        print(row.get_attribute('id'))
+    
+def check_functionality():
+    pgi.browser.get(pgi.rainfall_url)
+    ignored_exceptions = [NoSuchElementException, StaleElementReferenceException]
+    
+    id = 11204101
+    
+    for i in range(3, 8):
+        data = WebDriverWait(pgi.browser, 10, ignored_exceptions=ignored_exceptions).\
+            until(data_loaded(f'//*[@id="{id}"]/td[{i}]/span'))
+        print(data)
+
 if __name__ == "__main__":
     # print(wait_test())
     # data_num_rf()
     # print(type(datetime.strptime('11/05/22 11:00', '%m/%d/%y %H:%M')))
-    data_num_rf()
+    # data_num_rf()
+    # get_ids()
+    check_functionality()
