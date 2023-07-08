@@ -52,30 +52,28 @@ def scrape_rf(date_time, data_dict):
     '''
     Scrape data from rainfall webpage and store it in dictionary
     '''
-    WebDriverWait(pgi.browser, 10, ignored_exceptions=ignored_exceptions).until(
-        data_loaded('//*[@id="11303101"]/td[7]/span')
-    )
-    sleep(uniform(0.5, 0.75))
-    data_table = pgi.browser.find_element(By.XPATH, value='//*[@id="tblList"]')
-    rows = data_table.find_elements(By.TAG_NAME, 'tr')
+    ids = [11204101, 11105301, 11103105, 11103103, 11101101, 11203102, 11302102, 11302301,
+        11102103, 11202102, 11103107, 11103104, 11101102, 11102102, 11103106, 11201101,
+        11303102, 11201301, 11102105, 11204301, 11103101, 11302101, 11203101, 11102101,
+        11105101, 11303101]
     
-    for row in rows:
-        station_container = row.find_element(By.TAG_NAME, 'th')
-        station_name = station_container.find_element(By.TAG_NAME, 'span').text
+    for id in ids:
+        station_name = WebDriverWait(pgi.browser, 10, ignored_exceptions=ignored_exceptions).\
+            until(data_loaded(f'//*[@id="{id}"]/th/span'))
         data_list = []
-        data = row.find_elements(By.TAG_NAME, 'td')
-        
-        for point in data:
-            content = point.find_element(By.TAG_NAME, 'span').text
-            data_list.append(content)
+            
+        for i in range(3, 8):
+            data = WebDriverWait(pgi.browser, 10, ignored_exceptions=ignored_exceptions).\
+                until(data_loaded(f'//*[@id="{id}"]/td[{i}]/span'))
+            data_list.append(data)
             
         data_dict['datetime'].append(date_time)
         data_dict['station'].append(station_name)
-        data_dict['1hr'].append(data_list[2])
-        data_dict['3hr'].append(data_list[3])
-        data_dict['6hr'].append(data_list[4])
-        data_dict['12hr'].append(data_list[5])
-        data_dict['24hr'].append(data_list[6])
+        data_dict['1hr'].append(data_list[0])
+        data_dict['3hr'].append(data_list[1])
+        data_dict['6hr'].append(data_list[2])
+        data_dict['12hr'].append(data_list[3])
+        data_dict['24hr'].append(data_list[4])
     
 if __name__ == '__main__':
     print(datetime.now().isoformat())
