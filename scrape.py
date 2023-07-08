@@ -25,12 +25,24 @@ rainfall_data = {
 
 ignored_exceptions = [NoSuchElementException, StaleElementReferenceException]
 
+def data_loaded(xpath):
+    def return_value(driver):
+        try:
+            data = driver.find_element(By.XPATH, value=xpath).text
+            if data is None:
+                return False
+            return data
+        except StaleElementReferenceException:
+            return False
+            
+    return return_value
+
 def scrape_wl(date_time, data_dict):
     '''
     Scrape data from waterlevel webpage and store it in dictionary
     '''
-    data = WebDriverWait(pgi.browser, 5, ignored_exceptions=ignored_exceptions).until(
-        lambda d: d.find_element(By.XPATH, value='//*[@id="11104201"]/td[1]/span').text
+    data = WebDriverWait(pgi.browser, 10, ignored_exceptions=ignored_exceptions).until(
+        data_loaded('//*[@id="11104201"]/td[1]/span')
     )
     
     data_dict['datetime'].append(date_time)
@@ -40,10 +52,10 @@ def scrape_rf(date_time, data_dict):
     '''
     Scrape data from rainfall webpage and store it in dictionary
     '''
-    WebDriverWait(pgi.browser, 5, ignored_exceptions=ignored_exceptions).until(
-        lambda d: d.find_element(By.XPATH, '//*[@id="11303101"]/td[7]/span').text
+    WebDriverWait(pgi.browser, 10, ignored_exceptions=ignored_exceptions).until(
+        data_loaded('//*[@id="11303101"]/td[7]/span')
     )
-    sleep(uniform(0.25, 0.5))
+    sleep(uniform(0.5, 0.75))
     data_table = pgi.browser.find_element(By.XPATH, value='//*[@id="tblList"]')
     rows = data_table.find_elements(By.TAG_NAME, 'tr')
     
