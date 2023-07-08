@@ -23,7 +23,7 @@ ignored_exceptions = [NoSuchElementException, ElementClickInterceptedException]
 
 def wait_loading():
     sleep(0.1)
-    WebDriverWait(browser, 10, ignored_exceptions=ignored_exceptions).until(
+    WebDriverWait(browser, 20, ignored_exceptions=ignored_exceptions).until(
         expected_conditions.text_to_be_present_in_element_attribute(
             (By.ID, 'loading'), 'style', 'display: none;'
         )
