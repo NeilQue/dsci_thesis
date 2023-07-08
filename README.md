@@ -8,7 +8,7 @@
 * merge.py only when everything is finished
 * Do not download csv files, they contain 2022 data and the script will not erase this data when writing to the csv file
 * No need to create csv file manually, code will do it for you
-
+* checks.py not important
 
 ## Errors
 * TimeoutException: napagod yung program maghintay sa loading ng page; ito pinakamalaking chance mangyare pero normal lang yan
