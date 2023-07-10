@@ -23,6 +23,7 @@
 * repurposed: hopefully faster operations on dataframes
   * https://towardsdatascience.com/pandas-2-0-a-game-changer-for-data-scientists-3cd281fcc4b4
   * https://airbyte.com/blog/pandas-2-0-ecosystem-arrow-polars-duckdb
+  * https://arrow.apache.org/docs/python/
 * EDA using jupyter and pygwalker for no-code data viz; maybe R for stuff that involves calculations for precision of decimal arithmetic
   * https://github.com/Kanaries/pygwalker
 
