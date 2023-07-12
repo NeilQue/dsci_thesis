@@ -7,4 +7,4 @@ waterlevel_df = pd.read_csv('wl_data.csv', header=None, names=waterlevel_cols, e
 rainfall_df = pd.read_csv('rf_data_new.csv', header=None, names=rainfall_cols, engine='pyarrow')
 
 final_df = pd.merge(waterlevel_df, rainfall_df, on='datetime', how='left')
-final_df.to_csv('data', index=False)
+final_df.to_csv('data.csv', index=False)
