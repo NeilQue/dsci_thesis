@@ -20,7 +20,8 @@
 
 ## To Do:
 * ~~[not urgent: mas tatagal pa ata pag inaral ko pa to] try to lessen scraping time using pandas 2.0 and pyarrow~~
-* repurposed: hopefully faster operations on dataframes
+* ~~repurposed: hopefully faster operations on dataframes~~
+* not THAT much data anyway (so far) kaya yan
   * https://towardsdatascience.com/pandas-2-0-a-game-changer-for-data-scientists-3cd281fcc4b4
   * https://airbyte.com/blog/pandas-2-0-ecosystem-arrow-polars-duckdb
   * https://arrow.apache.org/docs/python/
