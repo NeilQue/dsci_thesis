@@ -60,7 +60,7 @@ def rainfall_loop(start, end):
 	
 if __name__ == "__main__":
     print(datetime.now().isoformat())
-    rainfall_df = rainfall_loop('10/10/22 00:00', '10/01/22 01:00')
+    rainfall_df = rainfall_loop('12/26/22 13:00', '12/26/22 13:00')
     rainfall_df.to_csv('rf_data.csv', index=False, header=False, mode='a')
     print(datetime.now().isoformat())
         

@@ -49,7 +49,7 @@ def waterlevel_loop(start, end):
 
 if __name__ == "__main__":
     print(datetime.now().isoformat())
-    waterlevel_df = waterlevel_loop('11/06/22 21:00', '11/01/22 01:00')
+    waterlevel_df = waterlevel_loop('11/01/22 00:00', '09/01/22 01:00')
     waterlevel_df.to_csv('wl_data.csv', index=False, header=False, mode='a')
     print(datetime.now().isoformat())
         
