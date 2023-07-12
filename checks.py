@@ -21,13 +21,15 @@ def check_col_types_rf():
 
 def data_num_rf():
     rainfall_df = pd.read_csv('rf_data.csv', header=None, names=rainfall_cols, engine='pyarrow')
-    # datetime_counts = rainfall_df['datetime'].value_counts()
-    print(type(rainfall_df.datetime.unique()[-1]))
+    datetime_counts = rainfall_df['datetime'].value_counts()
+    # print(datetime_counts[datetime_counts!=26])
+    for row in rainfall_df.datetime.unique():
+        print(row)
     
 def data_num_wl():
     waterlevel_df = pd.read_csv('wl_data.csv', header=None, names=waterlevel_cols, engine='pyarrow')
-    # datetime_counts = rainfall_df['datetime'].value_counts()
-    print(waterlevel_df.datetime.unique())    
+    datetime_counts = waterlevel_df['datetime'].value_counts() 
+    # print(len(datetime_counts))
 
 def wait_test():
     pgi.browser.get(pgi.waterlvl_url)
@@ -64,6 +66,8 @@ if __name__ == "__main__":
     # print(wait_test())
     # data_num_rf()
     # print(type(datetime.strptime('11/05/22 11:00', '%m/%d/%y %H:%M')))
-    # data_num_rf()
+    # data_num_wl()
     # get_ids()
-    check_functionality()
+    # check_functionality()
+    # check_col_types_wl()
+    # print(pd.to_datetime('2022-12-26 13:00:00', dayfirst=True))
