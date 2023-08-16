@@ -11,25 +11,25 @@ from scrape import data_loaded
 waterlevel_cols = ['datetime', 'water_level']
 rainfall_cols = ['datetime', 'station', '1hr', '3hr', '6hr', '12hr', '24hr']
 
-def check_col_types_wl():
-    df = pd.read_csv('wl_data.csv', header=None, names=waterlevel_cols, engine='pyarrow')
+def check_col_types_wl(wl_file):
+    df = pd.read_csv(wl_file, header=None, names=waterlevel_cols, engine='pyarrow')
     print(df.info())
 
-def check_col_types_rf():
-    df = pd.read_csv('rf_data.csv', header=None, names=rainfall_cols, engine='pyarrow')
+def check_col_types_rf(rf_file):
+    df = pd.read_csv(rf_file, header=None, names=rainfall_cols, engine='pyarrow')
     print(df.info())
 
-def data_num_rf():
-    rainfall_df = pd.read_csv('rf_data.csv', header=None, names=rainfall_cols, engine='pyarrow')
+def data_num_rf(rf_file):
+    rainfall_df = pd.read_csv(rf_file, header=None, names=rainfall_cols, engine='pyarrow')
     datetime_counts = rainfall_df['datetime'].value_counts()
-    # print(datetime_counts[datetime_counts!=26])
-    for row in rainfall_df.datetime.unique():
-        print(row)
+    print(datetime_counts[datetime_counts!=26])
+    # for row in rainfall_df.datetime.unique():
+        # print(row)
     
-def data_num_wl():
-    waterlevel_df = pd.read_csv('wl_data.csv', header=None, names=waterlevel_cols, engine='pyarrow')
+def data_num_wl(wl_file):
+    waterlevel_df = pd.read_csv(wl_file, header=None, names=waterlevel_cols, engine='pyarrow')
     datetime_counts = waterlevel_df['datetime'].value_counts() 
-    # print(len(datetime_counts))
+    print(waterlevel_df)
 
 def wait_test():
     pgi.browser.get(pgi.waterlvl_url)
@@ -63,11 +63,5 @@ def check_functionality():
         print(data)
 
 if __name__ == "__main__":
-    # print(wait_test())
-    # data_num_rf()
-    # print(type(datetime.strptime('11/05/22 11:00', '%m/%d/%y %H:%M')))
-    # data_num_wl()
-    # get_ids()
-    # check_functionality()
-    # check_col_types_wl()
-    # print(pd.to_datetime('2022-12-26 13:00:00', dayfirst=True))
+    check_col_types_rf('rf_data_p2.csv')
+    check_col_types_rf('rf_data_p1.csv')
