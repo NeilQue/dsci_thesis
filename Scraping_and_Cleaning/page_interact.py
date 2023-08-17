@@ -13,7 +13,7 @@ from time import sleep
 # instantiate driver needed to interact with browser
 options = webdriver.ChromeOptions()
 options.headless = True
-browser = webdriver.Chrome(service=Service(ChromeDriverManager(service=ChromeService(ChromeDriverManager(version='114.0.5735.90').install()), options=options)
+browser = webdriver.Chrome(service=Service(ChromeDriverManager(version='114.0.5735.90').install()), options=options)
 
 # urls where data is contained
 rainfall_url = "http://121.58.193.173:8080/rainfall/table.do"

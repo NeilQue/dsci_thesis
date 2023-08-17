@@ -18,6 +18,10 @@ def check_col_types_wl(wl_file):
 def check_col_types_rf(rf_file):
     df = pd.read_csv(rf_file, header=None, names=rainfall_cols, engine='pyarrow')
     print(df.info())
+    
+def check_col_types(file):
+    df = pd.read_csv(file, engine='pyarrow')
+    print(df.info())
 
 def data_num_rf(rf_file):
     rainfall_df = pd.read_csv(rf_file, header=None, names=rainfall_cols, engine='pyarrow')
@@ -63,5 +67,4 @@ def check_functionality():
         print(data)
 
 if __name__ == "__main__":
-    check_col_types_rf('rf_data_p2.csv')
-    check_col_types_rf('rf_data_p1.csv')
+    check_col_types('data_2022.csv')
