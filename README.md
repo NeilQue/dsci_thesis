@@ -1,5 +1,1 @@
-# dsci_thesis
-
-* Scraping data from PAGASA website
-* Conducting EDA
-* Making and training a model
+# Predictive Modeling of Marikina River Water Level using Artificial Neural Networks
