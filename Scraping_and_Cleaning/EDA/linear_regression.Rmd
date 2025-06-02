@@ -1,0 +1,63 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+data = read.csv('compiled_data_2016_2017.csv')
+data
+```
+
+
+```{r}
+N = nrow(data)
+N
+```
+
+```{r}
+data['friction_coeff'] = rep(0.033, N)
+data['slope'] = rep(1/1500, N)
+data
+```
+
+
+```{r}
+model = lm(Waterlevel_Sto_Nino~Rainfall_Aries+Rainfall_Boso+Rainfall_Campana+Rainfall_Nangka+Rainfall_Oro+Discharge_Sto_Nino+t+x+friction_coeff+slope, data=data)
+summary(model)
+```
+
+Based on the results, we found out that rainfall in Mt. Campana, Nangka, and Mt. Oro, discharge in Sto Nino, and time t are significant variables at 0.01 level of significance. Meanwhile, x, friction coefficient, and slope were disregarded.
+
+This model achieved an R^2 of 0.6626.
+
+```{r}
+pred = predict(model, data[c('Rainfall_Aries', 'Rainfall_Boso', 'Rainfall_Campana', 'Rainfall_Nangka', 'Rainfall_Oro', 'Discharge_Sto_Nino', 't', 'x', 'friction_coeff', 'slope')])
+pred
+```
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+datetimes = as.POSIXlt(data[['datetime']], format='%Y-%m-%d %H:%M:%S')
+datetimes
+```
+
+```{r}
+pred_df = data.frame(datetime = datetimes, predictions = pred)
+pred_df
+```
+
+```{r}
+data[['datetime']] = as.POSIXct(data[['datetime']], format='%Y-%m-%d %H:%M:%S')
+data
+```
+
+
+```{r}
+ggplot()+geom_line(data=pred_df, aes(x=datetime, y=predictions, color='red'), show.legend = TRUE)+geom_line(data = data, aes(x=datetime, y=Waterlevel_Sto_Nino, color='blue'), show.legend = TRUE)
+```
+
+
